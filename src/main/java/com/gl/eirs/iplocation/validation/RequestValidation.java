@@ -25,7 +25,7 @@ public class RequestValidation {
     public void validateRequest(HttpServletRequest request, IpInformation ipInformation) {
         logger.info("Validating the request received for check ip location.");
 
-        if(!request.getRequestURI().equalsIgnoreCase("/eirs/services/checkIpCountry")) {
+        if(!request.getRequestURI().equalsIgnoreCase("/eirs/services/checkIPCountry")) {
             logger.error("The requested method {}, is not supported", request.getRequestURI());
             HttpMethod httpMethod = HttpMethod.valueOf(request.getMethod());
             globalExceptionHandler.handleNoResourceFoundException(new NoResourceFoundException(httpMethod ,"The requested url " + request.getRequestURL().toString()+ ", is not supported"));

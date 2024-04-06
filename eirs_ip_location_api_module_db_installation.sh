@@ -1,5 +1,5 @@
 #!/bin/bash
-conffile=/u01/eirsapp/configuration/configuration.properties
+conffile=/u01 /eirsapp/configuration/configuration.properties
 typeset -A config # init array
 
 while read line

@@ -31,7 +31,7 @@ public class CheckIpLocation {
     GlobalExceptionHandler globalExceptionHandler;
     @Autowired
     RequestValidation requestValidation;
-    @PostMapping("/services/checkIpCountry")
+    @PostMapping("/services/checkIPCountry")
     public ResponseEntity<Object> checkIpLocation(@RequestBody IpInformation ipInformation) throws JsonProcessingException {
         logger.info("Received request for check ip country: {}", ipInformation.toString());
         ResponseEntity<Object> response = checkIpLocationService.getIpCountry(request, ipInformation);

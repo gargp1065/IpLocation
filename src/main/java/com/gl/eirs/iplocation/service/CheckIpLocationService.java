@@ -13,6 +13,9 @@ import com.gl.eirs.iplocation.dto.InternalApiResponse.IApiResponse;
 import com.gl.eirs.iplocation.dto.IpInformation;
 import com.gl.eirs.iplocation.entity.app.Ipv4;
 import com.gl.eirs.iplocation.entity.app.Ipv6;
+import com.gl.eirs.iplocation.exceptions.GlobalExceptionHandler;
+import com.gl.eirs.iplocation.exceptions.MissingRequestParameterException;
+import com.gl.eirs.iplocation.exceptions.UnprocessableEntityException;
 import com.gl.eirs.iplocation.repository.app.Ipv4Repository;
 import com.gl.eirs.iplocation.repository.app.Ipv6Repository;
 import com.gl.eirs.iplocation.repository.app.SysParamRepository;
@@ -57,6 +60,8 @@ public class CheckIpLocationService {
     Ipv6Repository ipv6Repository;
     @Autowired
     HttpServletRequest request;
+    @Autowired
+    GlobalExceptionHandler globalExceptionHandler;
     public ResponseEntity<Object> getIpCountry(HttpServletRequest request, IpInformation ipInformation) throws JsonProcessingException {
         try {
             requestValidation.validateRequest(request, ipInformation);
@@ -116,7 +121,12 @@ public class CheckIpLocationService {
                 }
             }
             return ResponseEntity.status(500).body(new ExceptionResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase()));
-        } catch (Exception e ) {
+        } catch (UnprocessableEntityException e) {
+            return globalExceptionHandler.exception(e);
+        } catch(MissingRequestParameterException e) {
+            return globalExceptionHandler.exception(e);
+        }
+        catch (Exception e ) {
             logger.error("Error occurred while processing the request {}", e.getLocalizedMessage());
             return ResponseEntity.status(500).body(new ExceptionResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase()));
         }
